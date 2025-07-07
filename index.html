@@ -33,10 +33,20 @@
             border-radius: 5px;
             cursor: pointer;
         }
+        #contador {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+        #faltantes {
+            margin-top: 20px;
+            font-weight: bold;
+            color: #d32f2f;
+        }
     </style>
 </head>
 <body>
 <h1>Álbum Mundial de Clubes 2025</h1>
+<div id="contador">Faltan 550 pegatinas</div>
 <h2>Iconos del Mundial</h2>
 <div class="equipo" id="iconos"></div>
 <div id="equipos"></div>
@@ -45,8 +55,10 @@
     <button onclick="cargarProgreso()">Cargar Progreso</button>
     <button onclick="resetearProgreso()">Resetear Todo</button>
 </div>
+<div id="faltantes"></div>
 
 <script>
+const TOTAL_PEGATINAS = 550;
 const equipos = [
     "Palmeiras", "Porto", "Al Ahly", "Inter Miami", "PSG", "Atlético Madrid", "Botafogo",
     "Seattle Sounders", "Bayer", "Auckland City", "Boca Juniors", "Benfica", "Flamengo",
@@ -58,12 +70,25 @@ const equipos = [
 
 let pegatinaActual = 1;
 
+function actualizarContador() {
+    let checkboxes = document.querySelectorAll("input[type=checkbox]");
+    let marcadas = 0;
+    let faltantes = [];
+    checkboxes.forEach(input => {
+        if (input.checked) marcadas++;
+        else faltantes.push(input.id.replace("pegatina-", ""));
+    });
+    document.getElementById("contador").textContent = `Faltan ${TOTAL_PEGATINAS - marcadas} pegatinas`;
+    document.getElementById("faltantes").textContent = faltantes.length > 0 ? `Faltantes: ${faltantes.join(", ")}` : "¡Álbum completo!";
+}
+
 function crearCheckboxes(contenedor, cantidad) {
     for (let i = 0; i < cantidad; i++) {
         const label = document.createElement("label");
         const input = document.createElement("input");
         input.type = "checkbox";
         input.id = `pegatina-${pegatinaActual}`;
+        input.addEventListener("change", actualizarContador);
         label.appendChild(input);
         label.appendChild(document.createTextNode(` #${pegatinaActual}`));
         contenedor.appendChild(label);
@@ -71,10 +96,8 @@ function crearCheckboxes(contenedor, cantidad) {
     }
 }
 
-// Iconos del Mundial
 crearCheckboxes(document.getElementById("iconos"), 4);
 
-// Equipos
 const contenedorEquipos = document.getElementById("equipos");
 equipos.forEach(equipo => {
     const h2 = document.createElement("h2");
@@ -103,6 +126,7 @@ function cargarProgreso() {
             const input = document.getElementById(id);
             if (input) input.checked = estado[id];
         });
+        actualizarContador();
         alert("Progreso cargado correctamente.");
     } else {
         alert("No hay progreso guardado.");
@@ -115,8 +139,12 @@ function resetearProgreso() {
         document.querySelectorAll("input[type=checkbox]").forEach(input => {
             input.checked = false;
         });
+        actualizarContador();
     }
 }
+
+actualizarContador();
 </script>
+<p style="text-align:center; color:gray; font-style:italic; margin-top:40px;">Develop By Elmer2</p>
 </body>
 </html>
