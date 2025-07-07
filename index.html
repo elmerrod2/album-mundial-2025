@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Álbum Mundial de Clubes 2025</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f0f8ff;
+        }
+        h1 {
+            color: #1a73e8;
+        }
+        h2 {
+            color: #333;
+            margin-top: 30px;
+        }
+        .equipo {
+            margin-bottom: 15px;
+        }
+        label {
+            display: inline-block;
+            width: 100px;
+            margin: 5px;
+        }
+        button {
+            margin: 10px 5px;
+            padding: 10px 15px;
+            border: none;
+            background-color: #1a73e8;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<h1>Álbum Mundial de Clubes 2025</h1>
+<h2>Iconos del Mundial</h2>
+<div class="equipo" id="iconos"></div>
+<div id="equipos"></div>
+<div>
+    <button onclick="guardarProgreso()">Guardar Progreso</button>
+    <button onclick="cargarProgreso()">Cargar Progreso</button>
+    <button onclick="resetearProgreso()">Resetear Todo</button>
+</div>
+
+<script>
+const equipos = [
+    "Palmeiras", "Porto", "Al Ahly", "Inter Miami", "PSG", "Atlético Madrid", "Botafogo",
+    "Seattle Sounders", "Bayer", "Auckland City", "Boca Juniors", "Benfica", "Flamengo",
+    "Sportive Tunis", "Chelsea", "Club León", "River Plate", "Urawa Red D", "Monterrey",
+    "Inter de Milan", "Fluminense", "Borussia Dortmund", "Ulsan HD", "Mamelodi Sundowns",
+    "Manchester City", "Wydad", "Al Ain", "Juventus", "Real Madrid", "Al Hilal", "Pachuca",
+    "Salzburg"
+];
+
+let pegatinaActual = 1;
+
+function crearCheckboxes(contenedor, cantidad) {
+    for (let i = 0; i < cantidad; i++) {
+        const label = document.createElement("label");
+        const input = document.createElement("input");
+        input.type = "checkbox";
+        input.id = `pegatina-${pegatinaActual}`;
+        label.appendChild(input);
+        label.appendChild(document.createTextNode(` #${pegatinaActual}`));
+        contenedor.appendChild(label);
+        pegatinaActual++;
+    }
+}
+
+// Iconos del Mundial
+crearCheckboxes(document.getElementById("iconos"), 4);
+
+// Equipos
+const contenedorEquipos = document.getElementById("equipos");
+equipos.forEach(equipo => {
+    const h2 = document.createElement("h2");
+    h2.textContent = equipo;
+    contenedorEquipos.appendChild(h2);
+    const divEquipo = document.createElement("div");
+    divEquipo.className = "equipo";
+    let cantidad = (equipo === "Inter Miami" || equipo === "Seattle Sounders") ? 3 : 18;
+    crearCheckboxes(divEquipo, cantidad);
+    contenedorEquipos.appendChild(divEquipo);
+});
+
+function guardarProgreso() {
+    const estado = {};
+    document.querySelectorAll("input[type=checkbox]").forEach(input => {
+        estado[input.id] = input.checked;
+    });
+    localStorage.setItem("album2025", JSON.stringify(estado));
+    alert("Progreso guardado correctamente.");
+}
+
+function cargarProgreso() {
+    const estado = JSON.parse(localStorage.getItem("album2025"));
+    if (estado) {
+        Object.keys(estado).forEach(id => {
+            const input = document.getElementById(id);
+            if (input) input.checked = estado[id];
+        });
+        alert("Progreso cargado correctamente.");
+    } else {
+        alert("No hay progreso guardado.");
+    }
+}
+
+function resetearProgreso() {
+    if (confirm("¿Seguro que deseas resetear todo el progreso?")) {
+        localStorage.removeItem("album2025");
+        document.querySelectorAll("input[type=checkbox]").forEach(input => {
+            input.checked = false;
+        });
+    }
+}
+</script>
+</body>
+</html>
