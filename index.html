@@ -2,149 +2,308 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Álbum Mundial de Clubes 2025</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Figuritas App - Usa Méx Can 26</title>
     <style>
+        :root {
+            --bg-color: #1a1a1a;
+            --card-bg: #2d2d2d;
+            --text-color: #f0f0f0;
+            --missing-color: #ff4757;
+            --have-color: #2ed573;
+            --accent-color: #3742fa;
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            background-color: #f0f8ff;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            padding-bottom: 80px;
         }
-        h1 {
-            color: #1a73e8;
+
+        h1, h3 {
+            text-align: center;
+            margin-bottom: 5px;
         }
-        h2 {
-            color: #333;
-            margin-top: 30px;
-        }
-        .equipo {
-            margin-bottom: 15px;
-        }
-        label {
-            display: inline-block;
-            width: 100px;
-            margin: 5px;
-        }
-        button {
-            margin: 10px 5px;
-            padding: 10px 15px;
-            border: none;
-            background-color: #1a73e8;
-            color: white;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        #contador {
-            font-size: 18px;
+
+        p.subtitle {
+            text-align: center;
+            color: #aaa;
+            margin-top: 0;
             margin-bottom: 20px;
+            font-size: 0.9em;
         }
-        #faltantes {
-            margin-top: 20px;
+
+        .stats {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.2em;
             font-weight: bold;
-            color: #d32f2f;
+        }
+
+        .team-section {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+
+        .team-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #444;
+            padding-bottom: 5px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .stickers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
+            gap: 8px;
+        }
+
+        .sticker {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            user-select: none;
+            transition: transform 0.1s, background-color 0.2s;
+        }
+
+        .sticker:active {
+            transform: scale(0.9);
+        }
+
+        /* Estado: Falta (Rojo) */
+        .sticker.missing {
+            background-color: transparent;
+            border: 2px solid var(--missing-color);
+            color: var(--missing-color);
+        }
+
+        /* Estado: La tengo (Verde) */
+        .sticker.have {
+            background-color: var(--have-color);
+            border: 2px solid var(--have-color);
+            color: #000;
+        }
+
+        .floating-btn {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 30px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            z-index: 1000;
+        }
+
+        .floating-btn:active {
+            background-color: #2f35cc;
         }
     </style>
 </head>
 <body>
-<h1>Álbum Mundial de Clubes 2025</h1>
-<div id="contador">Faltan 550 pegatinas</div>
-<h2>Iconos del Mundial</h2>
-<div class="equipo" id="iconos"></div>
-<div id="equipos"></div>
-<div>
-    <button onclick="guardarProgreso()">Guardar Progreso</button>
-    <button onclick="cargarProgreso()">Cargar Progreso</button>
-    <button onclick="resetearProgreso()">Resetear Todo</button>
-</div>
-<div id="faltantes"></div>
 
-<script>
-const TOTAL_PEGATINAS = 550;
-const equipos = [
-    "Palmeiras", "Porto", "Al Ahly", "Inter Miami", "PSG", "Atlético Madrid", "Botafogo",
-    "Seattle Sounders", "Bayer", "Auckland City", "Boca Juniors", "Benfica", "Flamengo",
-    "Sportive Tunis", "Chelsea", "Club León", "River Plate", "Urawa Red D", "Monterrey",
-    "Inter de Milan", "Fluminense", "Borussia Dortmund", "Ulsan HD", "Mamelodi Sundowns",
-    "Manchester City", "Wydad", "Al Ain", "Juventus", "Real Madrid", "Al Hilal", "Pachuca",
-    "Salzburg"
-];
+    <h1>Figuritas App</h1>
+    <p class="subtitle">Usa Méx Can 26</p>
 
-let pegatinaActual = 1;
+    <div class="stats" id="stats">
+        Cargando progreso...
+    </div>
 
-function actualizarContador() {
-    let checkboxes = document.querySelectorAll("input[type=checkbox]");
-    let marcadas = 0;
-    let faltantes = [];
-    checkboxes.forEach(input => {
-        if (input.checked) marcadas++;
-        else faltantes.push(input.id.replace("pegatina-", ""));
-    });
-    document.getElementById("contador").textContent = `Faltan ${TOTAL_PEGATINAS - marcadas} pegatinas`;
-    document.getElementById("faltantes").textContent = faltantes.length > 0 ? `Faltantes: ${faltantes.join(", ")}` : "¡Álbum completo!";
-}
+    <div id="album-container"></div>
 
-function crearCheckboxes(contenedor, cantidad) {
-    for (let i = 0; i < cantidad; i++) {
-        const label = document.createElement("label");
-        const input = document.createElement("input");
-        input.type = "checkbox";
-        input.id = `pegatina-${pegatinaActual}`;
-        input.addEventListener("change", actualizarContador);
-        label.appendChild(input);
-        label.appendChild(document.createTextNode(` #${pegatinaActual}`));
-        contenedor.appendChild(label);
-        pegatinaActual++;
-    }
-}
+    <button class="floating-btn" onclick="exportMissingList()">📋 Copiar Lista de Faltantes</button>
 
-crearCheckboxes(document.getElementById("iconos"), 4);
+    <script>
+        // Lista de equipos basada en tus imágenes
+        const teams = [
+            { id: 'fwc_cup', label: 'FWC 🏆' },
+            { id: 'fwc_ball', label: 'FWC 🌍' },
+            { id: 'fwc_scroll', label: 'FWC 📜' },
+            { id: 'mex', label: 'MEX 🇲🇽' },
+            { id: 'rsa', label: 'RSA 🇿🇦' },
+            { id: 'kor', label: 'KOR 🇰🇷' },
+            { id: 'cze', label: 'CZE 🇨🇿' },
+            { id: 'can', label: 'CAN 🇨🇦' },
+            { id: 'bih', label: 'BIH 🇧🇦' },
+            { id: 'qat', label: 'QAT 🇶🇦' },
+            { id: 'sui', label: 'SUI 🇨🇭' },
+            { id: 'mar', label: 'MAR 🇲🇦' },
+            { id: 'hai', label: 'HAI 🇭🇹' },
+            { id: 'sco', label: 'SCO 🏴󠁧󠁢󠁳󠁣󠁴󠁿' },
+            { id: 'usa', label: 'USA 🇺🇸' },
+            { id: 'par', label: 'PAR 🇵🇾' },
+            { id: 'aus', label: 'AUS 🇦🇺' },
+            { id: 'tur', label: 'TUR 🇹🇷' },
+            { id: 'ger', label: 'GER 🇩🇪' },
+            { id: 'cuw', label: 'CUW 🇨🇼' },
+            { id: 'ecu', label: 'ECU 🇪🇨' },
+            { id: 'ned', label: 'NED 🇳🇱' },
+            { id: 'jpn', label: 'JPN 🇯🇵' },
+            { id: 'swe', label: 'SWE 🇸🇪' },
+            { id: 'tun', label: 'TUN 🇹🇳' },
+            { id: 'bel', label: 'BEL 🇧🇪' },
+            { id: 'egy', label: 'EGY 🇪🇬' },
+            { id: 'nzl', label: 'NZL 🇳🇿' },
+            { id: 'esp', label: 'ESP 🇪🇸' },
+            { id: 'cpv', label: 'CPV 🇨🇻' },
+            { id: 'ksa', label: 'KSA 🇸🇦' },
+            { id: 'fra', label: 'FRA 🇫🇷' },
+            { id: 'sen', label: 'SEN 🇸🇳' },
+            { id: 'irq', label: 'IRQ 🇮🇶' },
+            { id: 'nor', label: 'NOR 🇳🇴' },
+            { id: 'arg', label: 'ARG 🇦🇷' },
+            { id: 'alg', label: 'ALG 🇩🇿' },
+            { id: 'aut', label: 'AUT 🇦🇹' },
+            { id: 'jor', label: 'JOR 🇯🇴' },
+            { id: 'por', label: 'POR 🇵🇹' },
+            { id: 'cod', label: 'COD 🇨🇩' },
+            { id: 'uzb', label: 'UZB 🇺🇿' },
+            { id: 'col', label: 'COL 🇨🇴' },
+            { id: 'cro', label: 'CRO 🇭🇷' },
+            { id: 'gha', label: 'GHA 🇬🇭' },
+            { id: 'pan', label: 'PAN 🇵🇦' },
+            { id: 'cc', label: 'CC 🥤' }
+        ];
 
-const contenedorEquipos = document.getElementById("equipos");
-equipos.forEach(equipo => {
-    const h2 = document.createElement("h2");
-    h2.textContent = equipo;
-    contenedorEquipos.appendChild(h2);
-    const divEquipo = document.createElement("div");
-    divEquipo.className = "equipo";
-    let cantidad = (equipo === "Inter Miami" || equipo === "Seattle Sounders") ? 3 : 18;
-    crearCheckboxes(divEquipo, cantidad);
-    contenedorEquipos.appendChild(divEquipo);
-});
+        const STICKERS_PER_TEAM = 20;
+        let albumData = JSON.parse(localStorage.getItem('albumData2026')) || {};
 
-function guardarProgreso() {
-    const estado = {};
-    document.querySelectorAll("input[type=checkbox]").forEach(input => {
-        estado[input.id] = input.checked;
-    });
-    localStorage.setItem("album2025", JSON.stringify(estado));
-    alert("Progreso guardado correctamente.");
-}
+        function initApp() {
+            const container = document.getElementById('album-container');
+            container.innerHTML = '';
 
-function cargarProgreso() {
-    const estado = JSON.parse(localStorage.getItem("album2025"));
-    if (estado) {
-        Object.keys(estado).forEach(id => {
-            const input = document.getElementById(id);
-            if (input) input.checked = estado[id];
-        });
-        actualizarContador();
-        alert("Progreso cargado correctamente.");
-    } else {
-        alert("No hay progreso guardado.");
-    }
-}
+            teams.forEach(team => {
+                // Crear sección del equipo
+                const section = document.createElement('div');
+                section.className = 'team-section';
 
-function resetearProgreso() {
-    if (confirm("¿Seguro que deseas resetear todo el progreso?")) {
-        localStorage.removeItem("album2025");
-        document.querySelectorAll("input[type=checkbox]").forEach(input => {
-            input.checked = false;
-        });
-        actualizarContador();
-    }
-}
+                // Título del equipo
+                const title = document.createElement('div');
+                title.className = 'team-title';
+                
+                // Contenedor de la cuadrícula
+                const grid = document.createElement('div');
+                grid.className = 'stickers-grid';
 
-actualizarContador();
-</script>
-<p style="text-align:center; color:gray; font-style:italic; margin-top:40px;">Develop By Elmer2</p>
+                let teamMissingCount = 0;
+
+                // Generar los 20 espacios
+                for (let i = 1; i <= STICKERS_PER_TEAM; i++) {
+                    const stickerId = `${team.id}_${i}`;
+                    const sticker = document.createElement('div');
+                    sticker.innerText = i;
+                    
+                    // Comprobar estado guardado (si no existe, por defecto es "Falta")
+                    const isHave = albumData[stickerId] === true;
+                    sticker.className = `sticker ${isHave ? 'have' : 'missing'}`;
+                    
+                    if (!isHave) teamMissingCount++;
+
+                    // Evento al hacer click
+                    sticker.onclick = () => toggleSticker(sticker, stickerId);
+                    
+                    grid.appendChild(sticker);
+                }
+
+                // Añadir el contador de faltantes al título del equipo
+                title.innerHTML = `<span>${team.label}</span> <span id="count_${team.id}" style="font-size:0.8em; color:#aaa;">Faltan: ${teamMissingCount}</span>`;
+
+                section.appendChild(title);
+                section.appendChild(grid);
+                container.appendChild(section);
+            });
+
+            updateStats();
+        }
+
+        function toggleSticker(element, stickerId) {
+            // Cambiar visualmente
+            if (element.classList.contains('missing')) {
+                element.classList.remove('missing');
+                element.classList.add('have');
+                albumData[stickerId] = true;
+            } else {
+                element.classList.remove('have');
+                element.classList.add('missing');
+                albumData[stickerId] = false;
+            }
+
+            // Guardar en LocalStorage
+            localStorage.setItem('albumData2026', JSON.stringify(albumData));
+            
+            // Actualizar contadores
+            updateTeamCounter(stickerId.split('_')[0]); // Le pasamos solo el ID del equipo (ej. "mex")
+            updateStats();
+        }
+
+        function updateTeamCounter(teamId) {
+            let missingCount = 0;
+            for (let i = 1; i <= STICKERS_PER_TEAM; i++) {
+                if (!albumData[`${teamId}_${i}`]) {
+                    missingCount++;
+                }
+            }
+            const countLabel = document.getElementById(`count_${teamId}`);
+            if(countLabel) countLabel.innerText = `Faltan: ${missingCount}`;
+        }
+
+        function updateStats() {
+            let totalStickers = teams.length * STICKERS_PER_TEAM;
+            let totalHave = Object.values(albumData).filter(val => val === true).length;
+            let totalMissing = totalStickers - totalHave;
+            let percentage = ((totalHave / totalStickers) * 100).toFixed(1);
+
+            document.getElementById('stats').innerHTML = 
+                `Faltan: <span style="color:var(--missing-color)">${totalMissing}</span> | 
+                 Completado: <span style="color:var(--have-color)">${percentage}%</span>`;
+        }
+
+        function exportMissingList() {
+            let textToExport = "Figuritas App - Lista\nUsa Méx Can 26\nMe faltan\n\n";
+            
+            teams.forEach(team => {
+                let missingNumbers = [];
+                for (let i = 1; i <= STICKERS_PER_TEAM; i++) {
+                    if (!albumData[`${team.id}_${i}`]) {
+                        missingNumbers.push(i);
+                    }
+                }
+                
+                if (missingNumbers.length > 0) {
+                    textToExport += `${team.label}: ${missingNumbers.join(', ')}\n`;
+                }
+            });
+
+            // Copiar al portapapeles
+            navigator.clipboard.writeText(textToExport).then(() => {
+                alert("¡Lista copiada al portapapeles! Ya puedes pegarla en WhatsApp o tus notas.");
+            }).catch(err => {
+                console.error("Error al copiar: ", err);
+                alert("Hubo un error al copiar la lista.");
+            });
+        }
+
+        // Iniciar la aplicación cuando cargue la página
+        window.onload = initApp;
+    </script>
 </body>
 </html>
