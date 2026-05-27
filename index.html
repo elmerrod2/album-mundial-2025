@@ -23,7 +23,7 @@
             padding-bottom: 80px;
         }
 
-        h1, h3 {
+        h1 {
             text-align: center;
             margin-bottom: 5px;
         }
@@ -38,9 +38,13 @@
 
         .stats {
             text-align: center;
-            margin-bottom: 20px;
-            font-size: 1.2em;
-            font-weight: bold;
+            margin-bottom: 25px;
+            font-size: 1.1em;
+            background-color: #222;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #333;
+            line-height: 1.6;
         }
 
         .team-section {
@@ -133,58 +137,56 @@
     <button class="floating-btn" onclick="exportMissingList()">📋 Copiar Lista de Faltantes</button>
 
     <script>
-        // Lista de equipos basada en tus imágenes
+        // Lista estructurada de equipos con sus rangos personalizados
         const teams = [
-            { id: 'fwc_cup', label: 'FWC 🏆' },
-            { id: 'fwc_ball', label: 'FWC 🌍' },
-            { id: 'fwc_scroll', label: 'FWC 📜' },
-            { id: 'mex', label: 'MEX 🇲🇽' },
-            { id: 'rsa', label: 'RSA 🇿🇦' },
-            { id: 'kor', label: 'KOR 🇰🇷' },
-            { id: 'cze', label: 'CZE 🇨🇿' },
-            { id: 'can', label: 'CAN 🇨🇦' },
-            { id: 'bih', label: 'BIH 🇧🇦' },
-            { id: 'qat', label: 'QAT 🇶🇦' },
-            { id: 'sui', label: 'SUI 🇨🇭' },
-            { id: 'mar', label: 'MAR 🇲🇦' },
-            { id: 'hai', label: 'HAI 🇭🇹' },
-            { id: 'sco', label: 'SCO 🏴󠁧󠁢󠁳󠁣󠁴󠁿' },
-            { id: 'usa', label: 'USA 🇺🇸' },
-            { id: 'par', label: 'PAR 🇵🇾' },
-            { id: 'aus', label: 'AUS 🇦🇺' },
-            { id: 'tur', label: 'TUR 🇹🇷' },
-            { id: 'ger', label: 'GER 🇩🇪' },
-            { id: 'cuw', label: 'CUW 🇨🇼' },
-            { id: 'ecu', label: 'ECU 🇪🇨' },
-            { id: 'ned', label: 'NED 🇳🇱' },
-            { id: 'jpn', label: 'JPN 🇯🇵' },
-            { id: 'swe', label: 'SWE 🇸🇪' },
-            { id: 'tun', label: 'TUN 🇹🇳' },
-            { id: 'bel', label: 'BEL 🇧🇪' },
-            { id: 'egy', label: 'EGY 🇪🇬' },
-            { id: 'nzl', label: 'NZL 🇳🇿' },
-            { id: 'esp', label: 'ESP 🇪🇸' },
-            { id: 'cpv', label: 'CPV 🇨🇻' },
-            { id: 'ksa', label: 'KSA 🇸🇦' },
-            { id: 'fra', label: 'FRA 🇫🇷' },
-            { id: 'sen', label: 'SEN 🇸🇳' },
-            { id: 'irq', label: 'IRQ 🇮🇶' },
-            { id: 'nor', label: 'NOR 🇳🇴' },
-            { id: 'arg', label: 'ARG 🇦🇷' },
-            { id: 'alg', label: 'ALG 🇩🇿' },
-            { id: 'aut', label: 'AUT 🇦🇹' },
-            { id: 'jor', label: 'JOR 🇯🇴' },
-            { id: 'por', label: 'POR 🇵🇹' },
-            { id: 'cod', label: 'COD 🇨🇩' },
-            { id: 'uzb', label: 'UZB 🇺🇿' },
-            { id: 'col', label: 'COL 🇨🇴' },
-            { id: 'cro', label: 'CRO 🇭🇷' },
-            { id: 'gha', label: 'GHA 🇬🇭' },
-            { id: 'pan', label: 'PAN 🇵🇦' },
-            { id: 'cc', label: 'CC 🥤' }
+            { id: 'fwc_1', label: 'FWC (1-8)', start: 1, end: 8 },
+            { id: 'mex', label: 'MEX' },
+            { id: 'rsa', label: 'RSA' },
+            { id: 'kor', label: 'KOR' },
+            { id: 'cze', label: 'CZE' },
+            { id: 'can', label: 'CAN' },
+            { id: 'bih', label: 'BIH' },
+            { id: 'qat', label: 'QAT' },
+            { id: 'sui', label: 'SUI' },
+            { id: 'mar', label: 'MAR' },
+            { id: 'hai', label: 'HAI' },
+            { id: 'sco', label: 'SCO' },
+            { id: 'usa', label: 'USA' },
+            { id: 'par', label: 'PAR' },
+            { id: 'aus', label: 'AUS' },
+            { id: 'tur', label: 'TUR' },
+            { id: 'ger', label: 'GER' },
+            { id: 'cuw', label: 'CUW' },
+            { id: 'ecu', label: 'ECU' },
+            { id: 'ned', label: 'NED' },
+            { id: 'jpn', label: 'JPN' },
+            { id: 'swe', label: 'SWE' },
+            { id: 'tun', label: 'TUN' },
+            { id: 'bel', label: 'BEL' },
+            { id: 'egy', label: 'EGY' },
+            { id: 'nzl', label: 'NZL' },
+            { id: 'esp', label: 'ESP' },
+            { id: 'cpv', label: 'CPV' },
+            { id: 'ksa', label: 'KSA' },
+            { id: 'fra', label: 'FRA' },
+            { id: 'sen', label: 'SEN' },
+            { id: 'irq', label: 'IRQ' },
+            { id: 'nor', label: 'NOR' },
+            { id: 'arg', label: 'ARG' },
+            { id: 'alg', label: 'ALG' },
+            { id: 'aut', label: 'AUT' },
+            { id: 'jor', label: 'JOR' },
+            { id: 'por', label: 'POR' },
+            { id: 'cod', label: 'COD' },
+            { id: 'uzb', label: 'UZB' },
+            { id: 'col', label: 'COL' },
+            { id: 'cro', label: 'CRO' },
+            { id: 'gha', label: 'GHA' },
+            { id: 'pan', label: 'PAN' },
+            { id: 'fwc_2', label: 'FWC (9-19)', start: 9, end: 19 },
+            { id: 'cc', label: 'CC (Vaso)', start: 1, end: 14}
         ];
 
-        const STICKERS_PER_TEAM = 20;
         let albumData = JSON.parse(localStorage.getItem('albumData2026')) || {};
 
         function initApp() {
@@ -192,39 +194,34 @@
             container.innerHTML = '';
 
             teams.forEach(team => {
-                // Crear sección del equipo
                 const section = document.createElement('div');
                 section.className = 'team-section';
 
-                // Título del equipo
                 const title = document.createElement('div');
                 title.className = 'team-title';
                 
-                // Contenedor de la cuadrícula
                 const grid = document.createElement('div');
                 grid.className = 'stickers-grid';
 
                 let teamMissingCount = 0;
+                const start = team.start || 1;
+                const end = team.end || 20;
 
-                // Generar los 20 espacios
-                for (let i = 1; i <= STICKERS_PER_TEAM; i++) {
+                for (let i = start; i <= end; i++) {
                     const stickerId = `${team.id}_${i}`;
                     const sticker = document.createElement('div');
                     sticker.innerText = i;
                     
-                    // Comprobar estado guardado (si no existe, por defecto es "Falta")
                     const isHave = albumData[stickerId] === true;
                     sticker.className = `sticker ${isHave ? 'have' : 'missing'}`;
                     
                     if (!isHave) teamMissingCount++;
 
-                    // Evento al hacer click
                     sticker.onclick = () => toggleSticker(sticker, stickerId);
                     
                     grid.appendChild(sticker);
                 }
 
-                // Añadir el contador de faltantes al título del equipo
                 title.innerHTML = `<span>${team.label}</span> <span id="count_${team.id}" style="font-size:0.8em; color:#aaa;">Faltan: ${teamMissingCount}</span>`;
 
                 section.appendChild(title);
@@ -236,7 +233,6 @@
         }
 
         function toggleSticker(element, stickerId) {
-            // Cambiar visualmente
             if (element.classList.contains('missing')) {
                 element.classList.remove('missing');
                 element.classList.add('have');
@@ -247,17 +243,23 @@
                 albumData[stickerId] = false;
             }
 
-            // Guardar en LocalStorage
             localStorage.setItem('albumData2026', JSON.stringify(albumData));
             
-            // Actualizar contadores
-            updateTeamCounter(stickerId.split('_')[0]); // Le pasamos solo el ID del equipo (ej. "mex")
+            // Extraer de forma segura el ID del equipo (para manejar los guiones bajos como fwc_1)
+            const teamId = stickerId.substring(0, stickerId.lastIndexOf('_'));
+            updateTeamCounter(teamId); 
             updateStats();
         }
 
         function updateTeamCounter(teamId) {
+            const team = teams.find(t => t.id === teamId);
+            if (!team) return;
+            
+            const start = team.start || 1;
+            const end = team.end || 20;
+            
             let missingCount = 0;
-            for (let i = 1; i <= STICKERS_PER_TEAM; i++) {
+            for (let i = start; i <= end; i++) {
                 if (!albumData[`${teamId}_${i}`]) {
                     missingCount++;
                 }
@@ -267,14 +269,28 @@
         }
 
         function updateStats() {
-            let totalStickers = teams.length * STICKERS_PER_TEAM;
-            let totalHave = Object.values(albumData).filter(val => val === true).length;
+            let totalStickers = 0;
+            let totalHave = 0;
+
+            teams.forEach(team => {
+                const start = team.start || 1;
+                const end = team.end || 20;
+                totalStickers += (end - start + 1);
+
+                for (let i = start; i <= end; i++) {
+                    if (albumData[`${team.id}_${i}`] === true) {
+                        totalHave++;
+                    }
+                }
+            });
+
             let totalMissing = totalStickers - totalHave;
             let percentage = ((totalHave / totalStickers) * 100).toFixed(1);
 
             document.getElementById('stats').innerHTML = 
-                `Faltan: <span style="color:var(--missing-color)">${totalMissing}</span> | 
-                 Completado: <span style="color:var(--have-color)">${percentage}%</span>`;
+                `<div><strong>Llenadas:</strong> <span style="color:var(--have-color)">${totalHave}</span> / <strong>Total:</strong> ${totalStickers}</div>
+                 <div><strong>Faltantes:</strong> <span style="color:var(--missing-color)">${totalMissing}</span></div>
+                 <div style="margin-top: 5px; font-size: 1.2em;"><strong>Llenado:</strong> <span style="color:var(--have-color)">${percentage}%</span></div>`;
         }
 
         function exportMissingList() {
@@ -282,18 +298,22 @@
             
             teams.forEach(team => {
                 let missingNumbers = [];
-                for (let i = 1; i <= STICKERS_PER_TEAM; i++) {
+                const start = team.start || 1;
+                const end = team.end || 20;
+
+                for (let i = start; i <= end; i++) {
                     if (!albumData[`${team.id}_${i}`]) {
                         missingNumbers.push(i);
                     }
                 }
                 
                 if (missingNumbers.length > 0) {
-                    textToExport += `${team.label}: ${missingNumbers.join(', ')}\n`;
+                    // Limpia el formato para exportar nombres limpios (ej. cambia 'FWC (1-8)' por solo 'FWC')
+                    let cleanLabel = team.label.split(' ')[0];
+                    textToExport += `${cleanLabel}: ${missingNumbers.join(', ')}\n`;
                 }
             });
 
-            // Copiar al portapapeles
             navigator.clipboard.writeText(textToExport).then(() => {
                 alert("¡Lista copiada al portapapeles! Ya puedes pegarla en WhatsApp o tus notas.");
             }).catch(err => {
@@ -302,7 +322,6 @@
             });
         }
 
-        // Iniciar la aplicación cuando cargue la página
         window.onload = initApp;
     </script>
 </body>
